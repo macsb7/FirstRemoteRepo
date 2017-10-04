@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  
+  <display-name>SpringMVC020WebFlow</display-name>
+  <welcome-file-list>
+  		<welcome-file>getHomePage.do</welcome-file>
+  </welcome-file-list>
+  
+<!--  listener -> filter -> servlet are the order of creation -->
+
+<!--  declare constant values in web.xml .(name must be same) give actual value .. accessible to all servlets , jsps and all 
+ContextLoaderListener will look for the filename provided here-->
+<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath:/EmpManagement.xml</param-value> <!--  change here -->
+</context-param>
+
+<!--  listener creates/makes application-context ready (from file mentioned in contextConfigLocation)forehand for spring -->
+<listener>
+	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+</listener>
+
+<!-- separate context -->
+<!--  creates web application-context as a child of application context // will be sub context of upper SUPER CONTEXT (multi context evnt) -->
+  <servlet>
+    <servlet-name>dispatcher</servlet-name> <!--  spring wont use this now -->
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	  <init-param>
+  		<param-name>contextConfigLocation</param-name> 
+  		<!--  config param of this name will be searched and multiple configs can be there -->
+		<param-value>/WEB-INF/config/EmpSpringMVC.xml</param-value>
+ 	 </init-param>  <!--  init param inside servlet -->
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+  
+  
+</web-app>
